@@ -45,8 +45,8 @@ public class User implements UserDetails {
         this.status = true;
     }
 
-    @Column(name = "full_name", nullable = false)
-    private String fullName;
+//    @Column(name = "full_name", nullable = false)
+//    private String fullName;
 
     @Column(name = "date_of_birth", nullable = false)
     private Date dateOfBirth;

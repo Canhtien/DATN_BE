@@ -16,8 +16,8 @@ public class RegisterRequest {
     @NotBlank
     private String username;
 
-    @NotBlank
-    private String fullName;
+//    @NotBlank
+//    private String fullName;
 
     @NotBlank
     private String password;

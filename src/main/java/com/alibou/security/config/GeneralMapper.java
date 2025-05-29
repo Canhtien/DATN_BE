@@ -64,7 +64,7 @@ public class GeneralMapper {
                 map().setId(source.getId());
                 map().setRoleId(source.getRole().getId());
                 map().setUsername(source.getUsername());
-                map().setFullName(source.getFullName());
+//                map().setFullName(source.getFullName());
                 map().setEmail(source.getEmail());
                 map().setDateOfBirth(source.getDateOfBirth());
                 map().setPhone(source.getPhone());

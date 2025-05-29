@@ -13,6 +13,9 @@ import com.alibou.security.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,7 +57,10 @@ public class MovieService {
     public List<Movie> getAllMovies() {
         return movieRepository.findAll();
     }
-
+    public Page<Movie> getAllMoviesPaged(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return movieRepository.findAllWithPagination(pageable);
+    }
     public MovieResponse getMovieById(long id) {
         Movie movie = movieRepository.findById(id).orElseThrow(() -> new ApplicationContextException("Movies not found"));
 

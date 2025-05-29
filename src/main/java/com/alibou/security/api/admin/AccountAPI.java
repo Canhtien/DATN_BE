@@ -1,11 +1,13 @@
 package com.alibou.security.api.admin;
 
 import com.alibou.security.api.user.InfoAPI;
+import com.alibou.security.entity.User;
 import com.alibou.security.model.response.UserResponse;
 import com.alibou.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +30,11 @@ public class AccountAPI {
             logger.error("Failed to retrieve notifications: {}", e.getMessage());
             return ResponseEntity.status(500).body(null);
         }
+    }
+    @GetMapping("/pages")
+    public ResponseEntity<Page<UserResponse>> findAllUser(@RequestParam(defaultValue = "0") int page,
+                                                  @RequestParam(defaultValue = "10") int pagesize) {
+        return ResponseEntity.ok(service.getAllUsersPaged(page, pagesize));
     }
 
     @PutMapping("/{id}/role/{roleId}")

@@ -45,7 +45,7 @@ public class SecurityApplication {
 			if (userRepository.count() == 0) {
 				var admin = RegisterRequest.builder()
 						.username("Admin")
-						.fullName("Admin")
+//						.fullName("Admin")
 						.email("admin@mail.com")
 						.phone("1234567890")
 						.day("01")
@@ -58,7 +58,7 @@ public class SecurityApplication {
 
 				var manager = RegisterRequest.builder()
 						.username("Manager")
-						.fullName("Manager")
+//						.fullName("Manager")
 						.email("manager@gmail.com")
 						.phone("0123456789")
 						.day("01")

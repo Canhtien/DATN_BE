@@ -1,6 +1,7 @@
 package com.alibou.security.service;
 
 import com.alibou.security.config.GeneralMapper;
+import com.alibou.security.entity.Movie;
 import com.alibou.security.entity.Role;
 import com.alibou.security.entity.User;
 import com.alibou.security.mapper.UserMapper;
@@ -13,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContextException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -121,10 +125,15 @@ public class UserService {
                 .map(user -> generalMapper.mapToDTO(user, UserResponse.class))
                 .toList();
     }
+    public Page<UserResponse> getAllUsersPaged(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<User> users = userRepository.findAllWithPagination(pageable);
+        return users.map(userMapper::toUserResponse);
+    }
 
     public UserResponse updateUserInfo(Long id, UserResponse user) {
         User users = repository.findById(id).orElseThrow(() -> new IllegalStateException("User not found"));
-        users.setFullName(user.getFullName());
+//        users.setFullName(user.getFullName());
         users.setDateOfBirth(user.getDateOfBirth());
         users.setPhone(user.getPhone());
         users.setUpdatedBy(id);

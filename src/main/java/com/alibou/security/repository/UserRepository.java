@@ -1,6 +1,10 @@
 package com.alibou.security.repository;
 
+import com.alibou.security.entity.Movie;
 import com.alibou.security.entity.User;
+import com.alibou.security.model.response.UserResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +22,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Transactional
     @Query("UPDATE User u SET u.status = false WHERE u.id = :id")
     void deactivateUserById(Long id);
+    @Query(value = "SELECT u FROM User u",
+            countQuery = "SELECT COUNT(u) FROM User u")
+    Page<User> findAllWithPagination(Pageable pageable);
 }

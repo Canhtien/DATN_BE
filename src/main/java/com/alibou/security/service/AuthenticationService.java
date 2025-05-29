@@ -58,7 +58,7 @@ public class AuthenticationService {
 
         var user = User.builder()
                 .username(request.getUsername())
-                .fullName(request.getFullName())
+//                .fullName(request.getFullName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .dateOfBirth(Date.valueOf(request.getYear() + "-" + request.getMonth() + "-" + request.getDay()))
