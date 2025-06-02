@@ -2,6 +2,7 @@ package com.alibou.security.service;
 
 import com.alibou.security.config.GeneralMapper;
 import com.alibou.security.entity.Hall;
+import com.alibou.security.entity.Movie;
 import com.alibou.security.model.request.HallRequest;
 import com.alibou.security.model.response.HallResponse;
 import com.alibou.security.repository.HallRepository;
@@ -9,6 +10,9 @@ import com.alibou.security.repository.TheaterRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -63,5 +67,9 @@ public class HallService {
         return halls.stream()
                 .map(hall -> generalMapper.mapToDTO(hall, HallResponse.class))
                 .toList();
+    }
+    public Page<HallResponse> getAllHallsPaged(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findAllWithPagination(pageable);
     }
 }

@@ -1,6 +1,7 @@
 package com.alibou.security.repository;
 
 import com.alibou.security.entity.Movie;
+import com.alibou.security.model.response.MovieResponse;
 import jakarta.persistence.Entity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,4 +23,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Query(value = "SELECT m FROM Movie m",
             countQuery = "SELECT COUNT(m) FROM Movie m")
     Page<Movie> findAllWithPagination(Pageable pageable);
+    @Query(value = "SELECT m FROM Movie m WHERE ",
+            countQuery = "SELECT COUNT(m) FROM Movie m")
+    Page<MovieResponse> findTopWithPagination(Pageable pageable);
 }

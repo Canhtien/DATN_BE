@@ -4,7 +4,9 @@ import com.alibou.security.model.request.HallRequest;
 import com.alibou.security.model.response.HallResponse;
 import com.alibou.security.service.HallService;
 import lombok.RequiredArgsConstructor;
+//import org.hibernate.query.Page;
 import org.slf4j.Logger;
+import org.springframework.data.domain.Page;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,12 @@ public class HallAPI {
             logger.error("Failed to retrieve halls: {}", e.getMessage());
             return ResponseEntity.status(500).body(null);
         }
+    }
+
+    @GetMapping("/pages")
+    public ResponseEntity<Page<HallResponse>> findHallsByPages(@RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "10")int pagesize){
+    return ResponseEntity.ok(service.getAllHallsPaged(page, pagesize));
     }
 
     @PostMapping

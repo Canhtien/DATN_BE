@@ -61,6 +61,10 @@ public class MovieService {
         Pageable pageable = PageRequest.of(page, size);
         return movieRepository.findAllWithPagination(pageable);
     }
+    public Page<MovieResponse> getTopMoviesPaged(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return movieRepository.findTopWithPagination(pageable);
+    }
     public MovieResponse getMovieById(long id) {
         Movie movie = movieRepository.findById(id).orElseThrow(() -> new ApplicationContextException("Movies not found"));
 
