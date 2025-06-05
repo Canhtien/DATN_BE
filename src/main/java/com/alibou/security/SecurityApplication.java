@@ -1,6 +1,6 @@
 package com.alibou.security;
 
-import com.alibou.security.service.AuthenticationService;
+import com.alibou.security.service.JPA.AuthenticationServiceJPA;
 import com.alibou.security.model.request.RegisterRequest;
 import com.alibou.security.entity.Role;
 import com.alibou.security.repository.RoleRepository;
@@ -23,7 +23,7 @@ public class SecurityApplication {
 
 	@Bean
 	public CommandLineRunner commandLineRunner(
-			AuthenticationService service,
+			AuthenticationServiceJPA service,
 			RoleRepository roleRepository,
 			UserRepository userRepository
 	) {

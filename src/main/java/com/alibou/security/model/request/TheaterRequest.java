@@ -15,5 +15,8 @@ public class TheaterRequest {
     private String location;
     @NotNull
     private String phone;
+    @NotNull
+    private String code;
 
+    private String theaterImg;
 }

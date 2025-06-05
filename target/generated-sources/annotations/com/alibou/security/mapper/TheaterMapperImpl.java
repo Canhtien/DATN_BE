@@ -22,8 +22,10 @@ public class TheaterMapperImpl implements TheaterMapper {
         Theater.TheaterBuilder theater = Theater.builder();
 
         theater.name( request.getName() );
+        theater.code( request.getCode() );
         theater.location( request.getLocation() );
         theater.phone( request.getPhone() );
+        theater.theaterImg( request.getTheaterImg() );
 
         return theater.build();
     }
@@ -40,6 +42,7 @@ public class TheaterMapperImpl implements TheaterMapper {
         theaterResponse.name( theater.getName() );
         theaterResponse.location( theater.getLocation() );
         theaterResponse.phone( theater.getPhone() );
+        theaterResponse.code( theater.getCode() );
 
         return theaterResponse.build();
     }

@@ -1,15 +1,13 @@
 package com.alibou.security.api.user;
 
-import com.alibou.security.entity.Movie;
 import com.alibou.security.model.request.ChangePasswordRequest;
-import com.alibou.security.model.response.MovieResponse;
 import com.alibou.security.model.response.TheaterResponse;
 import com.alibou.security.model.response.UserResponse;
 import com.alibou.security.model.response.interfaces.ShowtimeResponseInterface;
-import com.alibou.security.service.MovieService;
-import com.alibou.security.service.ShowtimeService;
-import com.alibou.security.service.TheaterService;
-import com.alibou.security.service.UserService;
+import com.alibou.security.service.JPA.MovieServiceJPA;
+import com.alibou.security.service.JPA.ShowtimeServiceJPA;
+import com.alibou.security.service.JPA.TheaterServiceJPA;
+import com.alibou.security.service.JPA.UserServiceJPA;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,14 +25,14 @@ public class UserAPI {
 
     private static final Logger logger = LoggerFactory.getLogger(UserAPI.class);
 
-    private final UserService service;
-    private final UserService userService;
+    private final UserServiceJPA service;
+    private final UserServiceJPA userService;
     @Autowired
-    MovieService movieService;
+    MovieServiceJPA movieService;
     @Autowired
-    ShowtimeService showtimeService;
+    ShowtimeServiceJPA showtimeService;
     @Autowired
-    TheaterService theaterService;
+    TheaterServiceJPA theaterService;
 
 //    @GetMapping("/movies")
 //    public ResponseEntity<List<Movie>> getMovieList() {

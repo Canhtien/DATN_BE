@@ -28,6 +28,8 @@ public class Theater {
     @Column(unique = true, nullable = false)
     private String name;
 
+    private String code;
+
     private String location;
 
     @Column(unique = true)
@@ -41,6 +43,9 @@ public class Theater {
 
     @Column(name = "created_by", updatable = false)
     private Long createdBy;
+
+    @Column(name = "theater_img", updatable = false, columnDefinition = "LONGTEXT")
+    private String theaterImg;
 
     @Column(name = "updated_by", updatable = false)
     private Long updatedBy;

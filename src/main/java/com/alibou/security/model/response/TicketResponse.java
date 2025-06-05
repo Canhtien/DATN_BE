@@ -28,7 +28,7 @@ public class TicketResponse {
     @ToString.Exclude
     DiscountApplication discountApplication;
     Long id;
-    String seatNumber;
+    Long seatId;
     String ticketType;
     BigDecimal price = BigDecimal.ZERO;
     BigDecimal serviceFee = BigDecimal.ZERO;
@@ -43,12 +43,12 @@ public class TicketResponse {
     String theaterName;
     String hallName;
 
-    public TicketResponse(Long id, String seatNumber, String ticketType, BigDecimal price, BigDecimal serviceFee,
+    public TicketResponse(Long id, Long seatId, String ticketType, BigDecimal price, BigDecimal serviceFee,
                           TicketStatus status, LocalDateTime createdAt, LocalDateTime updatedAt, Long createdBy,
                           Long updatedBy, LocalDateTime showTime, String movieTitle, String theaterName,
                           String hallName) {
         this.id = id;
-        this.seatNumber = seatNumber;
+        this.seatId = seatId;
         this.ticketType = ticketType;
         this.price = price;
         this.serviceFee = serviceFee;

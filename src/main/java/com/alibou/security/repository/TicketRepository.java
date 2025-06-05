@@ -21,10 +21,10 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     boolean existsById(Long id);
     void deleteByShowtimeId(Long showtimeId);
 
-    @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Ticket t WHERE t.showtime.id = :showtimeId AND t.seatNumber = :seatNumber")
-    boolean existsByShowtimeIdAndSeatNumber(@Param("showtimeId") Long showtimeId, @Param("seatNumber") String seatNumber);
+    @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Ticket t WHERE t.showtime.id = :showtimeId AND t.seat.id = :seatId")
+    boolean existsByShowtimeIdAndSeatId(@Param("showtimeId") Long showtimeId, @Param("seatId") Long seatId);
 
-    @Query("SELECT new com.alibou.security.model.response.TicketResponse(t.id, t.seatNumber, t.ticketType, t.price, " +
+    @Query("SELECT new com.alibou.security.model.response.TicketResponse(t.id, t.seat.id, t.ticketType, t.price, " +
             "t.serviceFee, t.status, t.createdAt, t.updatedAt, t.createdBy, t.updatedBy, " +
             "s.showTime, m.title, th.name, h.name) " +
             "FROM Ticket t " +
@@ -35,7 +35,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             "WHERE t.user.id = :userId")
     List<TicketResponse> findAllByUserId(@Param("userId") Long userId);
 
-    @Query("SELECT new com.alibou.security.model.response.TicketResponse(t.id, t.seatNumber, t.ticketType, t.price, " +
+    @Query("SELECT new com.alibou.security.model.response.TicketResponse(t.id, t.seat.id, t.ticketType, t.price, " +
             "t.serviceFee, t.status, t.createdAt, t.updatedAt, t.createdBy, t.updatedBy, " +
             "s.showTime, m.title, th.name, h.name) " +
             "FROM Ticket t " +

@@ -1,11 +1,9 @@
 package com.alibou.security.api.manager;
 
-import com.alibou.security.entity.Showtime;
 import com.alibou.security.mapper.ShowtimeMapper;
 import com.alibou.security.model.request.ShowtimeRequest;
 import com.alibou.security.model.response.ShowtimeResponse;
-import com.alibou.security.model.response.interfaces.ShowtimeResponseInterface;
-import com.alibou.security.service.ShowtimeService;
+import com.alibou.security.service.JPA.ShowtimeServiceJPA;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -13,9 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/management/showtime")
@@ -25,7 +20,7 @@ public class ShowtimeAPI {
     private static final Logger logger = LoggerFactory.getLogger(ShowtimeAPI.class);
 
     @Autowired
-    ShowtimeService showtimeService;
+    ShowtimeServiceJPA showtimeService;
 
     @Autowired
     ShowtimeMapper showtimeMapper;

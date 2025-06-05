@@ -3,8 +3,8 @@ package com.alibou.security.api.authentication;
 import com.alibou.security.model.request.AuthenticationRequest;
 import com.alibou.security.model.request.RegisterRequest;
 import com.alibou.security.model.response.AuthenticationResponse;
-import com.alibou.security.service.AuthenticationService;
-import com.alibou.security.service.LogoutService;
+import com.alibou.security.service.JPA.AuthenticationServiceJPA;
+import com.alibou.security.service.JPA.LogoutServiceJPA;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +19,12 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class AuthenticationAPI {
+public class
+AuthenticationAPI {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationAPI.class);
-    private final AuthenticationService service;
-    private final LogoutService logoutService;
+    private final AuthenticationServiceJPA service;
+    private final LogoutServiceJPA logoutService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {

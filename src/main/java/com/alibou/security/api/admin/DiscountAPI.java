@@ -2,7 +2,7 @@ package com.alibou.security.api.admin;
 
 import com.alibou.security.model.request.DiscountRequest;
 import com.alibou.security.model.response.DiscountResponse;
-import com.alibou.security.service.DiscountService;
+import com.alibou.security.service.JPA.DiscountServiceJPA;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DiscountAPI {
     private static final Logger logger = LoggerFactory.getLogger(DiscountAPI.class);
-    private final DiscountService service;
+    private final DiscountServiceJPA service;
 
     @GetMapping
     public ResponseEntity<?> findAllDiscounts() {

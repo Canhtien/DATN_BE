@@ -2,14 +2,12 @@ package com.alibou.security.api.manager;
 
 import com.alibou.security.model.request.TheaterRequest;
 import com.alibou.security.model.response.TheaterResponse;
-import com.alibou.security.service.TheaterService;
+import com.alibou.security.service.JPA.TheaterServiceJPA;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/management/theaters")
@@ -17,7 +15,7 @@ import java.util.List;
 public class TheaterAPI {
 
     private static final Logger logger = LoggerFactory.getLogger(TheaterAPI.class);
-    private final TheaterService service;
+    private final TheaterServiceJPA service;
 
 
 
@@ -36,6 +34,11 @@ public class TheaterAPI {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getTheaterById(@RequestBody TheaterRequest request, @PathVariable Long id){
+        return ResponseEntity.status(200).body(service.getById(id));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> changeTheater(@RequestBody TheaterRequest request, @PathVariable Long id) {
         try {
@@ -50,6 +53,7 @@ public class TheaterAPI {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTheater(@PathVariable Long id) {

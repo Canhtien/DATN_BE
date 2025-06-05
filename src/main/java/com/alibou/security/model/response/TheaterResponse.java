@@ -14,4 +14,6 @@ public class TheaterResponse {
     private String name;
     private String location;
     private String phone;
+    private String code;
+    private String theaterimg;
 }

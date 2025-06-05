@@ -2,29 +2,31 @@ package com.alibou.security.api.guest;
 
 import com.alibou.security.api.user.UserAPI;
 import com.alibou.security.entity.Movie;
-import com.alibou.security.model.response.HallResponse;
+import com.alibou.security.model.dto.MovieDTO;
+import com.alibou.security.model.dto.TheaterDTO;
 import com.alibou.security.model.response.MovieResponse;
 import com.alibou.security.model.response.TheaterResponse;
 import com.alibou.security.model.response.interfaces.ShowtimeResponseInterface;
-import com.alibou.security.service.MovieService;
-import com.alibou.security.service.ShowtimeService;
-import com.alibou.security.service.TheaterService;
+import com.alibou.security.service.JPA.MovieServiceJPA;
+import com.alibou.security.service.JPA.ShowtimeServiceJPA;
+import com.alibou.security.service.JPA.TheaterServiceJPA;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 @RestController
 @RequestMapping("/api/guest") // Tách endpoint movies ra API riêng
 @RequiredArgsConstructor
 public class GetMovieAPI {
     private static final Logger logger = LoggerFactory.getLogger(UserAPI.class);
-    private final MovieService movieService;
-    private final ShowtimeService showtimeService;
-    private final TheaterService theaterService;
+    private final MovieServiceJPA movieService;
+    private final ShowtimeServiceJPA showtimeService;
+    private final TheaterServiceJPA theaterService;
 
     @GetMapping ("/movies")
     public ResponseEntity<List<Movie>> getMovieList() {
@@ -33,13 +35,23 @@ public class GetMovieAPI {
     }
     //top phim
     @GetMapping ("/top-movies")
-    public ResponseEntity<Page<MovieResponse>> getTopMovie(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<List<MovieResponse>> getTopMovie(@RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10")int pagesize){
             return ResponseEntity.ok(movieService.getTopMoviesPaged(page, pagesize));
         }
 
     //đang chiếu
+    @GetMapping ("/now-showing-movies")
+    public ResponseEntity<List<MovieResponse>> getShowingMovie(@RequestParam(defaultValue = "0") int page,
+                                                           @RequestParam(defaultValue = "10")int pagesize){
+        return ResponseEntity.ok(movieService.getShowingMoviesPaged(page, pagesize));
+    }
     //comming soon
+    @GetMapping ("/comming-soon-movies")
+    public ResponseEntity<List<MovieResponse>> getCommingSoonMovie(@RequestParam(defaultValue = "0") int page,
+                                                           @RequestParam(defaultValue = "10")int pagesize){
+        return ResponseEntity.ok(movieService.getCommingSoonMoviesPaged(page, pagesize));
+    }
 
     @GetMapping("/movies/{id}")
     public ResponseEntity<?> getMovie(@PathVariable int id) {
@@ -79,5 +91,26 @@ public class GetMovieAPI {
             return ResponseEntity.status(500).body(null);
         }
     }
+    @GetMapping("/with-halls-and-movies")
+    public List<TheaterDTO> getTheaterHallMovieTree() {
+        return theaterService.getTheaterHierarchy();
+    }
 
+    @GetMapping("/theater/{theaterId}")
+    public ResponseEntity<List<MovieDTO>> getMovieShowtimeSeats(
+            @PathVariable Long theaterId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+    ) {
+        List<MovieDTO> data = movieService.getMovieShowtimeSeatHierarchy(theaterId, date);
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/theater/movieId/{movieId}")
+    public ResponseEntity<List<TheaterDTO>> getTheaterByMovieId(
+            @PathVariable Long movieId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+    ){
+        List<TheaterDTO> data = theaterService.getTheaterHierarchyByMovieId(movieId,date);
+        return ResponseEntity.ok(data);
+    }
 }

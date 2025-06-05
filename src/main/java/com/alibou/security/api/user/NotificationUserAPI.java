@@ -1,7 +1,7 @@
 package com.alibou.security.api.user;
 
 import com.alibou.security.model.response.NotificationResponse;
-import com.alibou.security.service.NotificationService;
+import com.alibou.security.service.JPA.NotificationServiceJPA;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import java.util.List;
 public class NotificationUserAPI {
 
     private static final Logger logger = LoggerFactory.getLogger(InfoAPI.class);
-    private final NotificationService service;
+    private final NotificationServiceJPA service;
 
     @GetMapping("/{userId}")
     public ResponseEntity<?> getNotificationsByUserId(@PathVariable Long userId) {

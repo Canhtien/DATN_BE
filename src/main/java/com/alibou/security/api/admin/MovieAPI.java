@@ -4,7 +4,7 @@ import com.alibou.security.entity.Movie;
 import com.alibou.security.mapper.MovieMapper;
 import com.alibou.security.model.request.MovieRequest;
 import com.alibou.security.model.response.MovieResponse;
-import com.alibou.security.service.MovieService;
+import com.alibou.security.service.JPA.MovieServiceJPA;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,20 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/management/movies")
 @RequiredArgsConstructor
 public class MovieAPI {
     private static final Logger logger = LoggerFactory.getLogger(MovieAPI.class);
-    private final MovieService service;
+    private final MovieServiceJPA service;
 
     @Autowired
-    MovieService movieService;
+    MovieServiceJPA movieService;
 
     @Autowired
     MovieMapper movieMapper;

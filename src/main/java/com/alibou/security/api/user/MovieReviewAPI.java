@@ -3,9 +3,9 @@ package com.alibou.security.api.user;
 import com.alibou.security.entity.MovieReview;
 import com.alibou.security.model.request.MovieReviewRequest;
 import com.alibou.security.model.response.MovieReviewResponse;
-import com.alibou.security.service.MovieReviewService;
-import com.alibou.security.service.TicketService;
-import com.alibou.security.service.UserService;
+import com.alibou.security.service.JPA.MovieReviewServiceJPA;
+import com.alibou.security.service.JPA.TicketServiceJPA;
+import com.alibou.security.service.JPA.UserServiceJPA;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -20,10 +20,10 @@ import java.util.List;
 @RequestMapping("/api/users/reviews")
 @Slf4j
 public class MovieReviewAPI {
-    private final MovieReviewService movieReviewService;
+    private final MovieReviewServiceJPA movieReviewService;
     private final Logger logger = LoggerFactory.getLogger(MovieReviewAPI.class);
-    private final UserService userService;
-    private final TicketService ticketService;
+    private final UserServiceJPA userService;
+    private final TicketServiceJPA ticketService;
 
     @GetMapping
     public ResponseEntity<List<MovieReview>> getMovieReviews() {

@@ -1,9 +1,8 @@
 package com.alibou.security.api.admin;
 
 import com.alibou.security.api.user.InfoAPI;
-import com.alibou.security.entity.User;
 import com.alibou.security.model.response.UserResponse;
-import com.alibou.security.service.UserService;
+import com.alibou.security.service.JPA.UserServiceJPA;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountAPI {
     private static final Logger logger = LoggerFactory.getLogger(InfoAPI.class);
-    private final UserService service;
+    private final UserServiceJPA service;
 
     @GetMapping
     public ResponseEntity<List<UserResponse>> findAllUsers() {

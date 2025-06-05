@@ -27,7 +27,7 @@ public class TicketRequest {
 //    User user;
 //    Showtime showtime;
 //    DiscountApplication discountApplication;
-    String seatNumber;
+    Long seatId;
     String ticketType;
     BigDecimal price = BigDecimal.ZERO;
     BigDecimal serviceFee = BigDecimal.ZERO;

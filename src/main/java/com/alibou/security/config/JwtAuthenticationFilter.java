@@ -1,7 +1,7 @@
 package com.alibou.security.config;
 
 import com.alibou.security.repository.TokenRepository;
-import com.alibou.security.service.JwtService;
+import com.alibou.security.service.JPA.JwtServiceJPA;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
-    private final JwtService jwtService;
+    private final JwtServiceJPA jwtService;
     private final UserDetailsService userDetailsService;
     private final TokenRepository tokenRepository;
 

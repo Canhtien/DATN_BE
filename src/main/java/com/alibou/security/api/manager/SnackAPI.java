@@ -2,7 +2,7 @@ package com.alibou.security.api.manager;
 
 import com.alibou.security.model.request.SnackRequest;
 import com.alibou.security.model.response.SnackResponse;
-import com.alibou.security.service.SnackService;
+import com.alibou.security.service.JPA.SnackServiceJPA;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SnackAPI {
     private static final Logger logger = LoggerFactory.getLogger(TheaterAPI.class);
-    private final SnackService service;
+    private final SnackServiceJPA service;
 
     @GetMapping
     public ResponseEntity<List<SnackResponse>> findAllSnacks() {

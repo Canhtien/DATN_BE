@@ -2,7 +2,7 @@ package com.alibou.security.api.manager;
 
 import com.alibou.security.model.request.HallRequest;
 import com.alibou.security.model.response.HallResponse;
-import com.alibou.security.service.HallService;
+import com.alibou.security.service.JPA.HallServiceJPA;
 import lombok.RequiredArgsConstructor;
 //import org.hibernate.query.Page;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HallAPI {
     private static final Logger logger = LoggerFactory.getLogger(HallAPI.class);
-    private final HallService service;
+    private final HallServiceJPA service;
 
     @GetMapping
     public ResponseEntity<List<HallResponse>> findAllHalls() {

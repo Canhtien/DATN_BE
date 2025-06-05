@@ -2,7 +2,7 @@ package com.alibou.security.api.manager;
 
 import com.alibou.security.model.request.NotificationRequest;
 import com.alibou.security.model.response.NotificationResponse;
-import com.alibou.security.service.NotificationService;
+import com.alibou.security.service.JPA.NotificationServiceJPA;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NotificationAPI {
     private static final Logger logger = LoggerFactory.getLogger(TheaterAPI.class);
-    private final NotificationService service;
+    private final NotificationServiceJPA service;
 
     @GetMapping
     public ResponseEntity<?> findAllNotifications() {

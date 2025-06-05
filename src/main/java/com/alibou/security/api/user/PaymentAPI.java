@@ -3,8 +3,8 @@ package com.alibou.security.api.user;
 import com.alibou.security.entity.Payment;
 import com.alibou.security.entity.User;
 import com.alibou.security.model.request.PaymentRequest;
-import com.alibou.security.service.PaymentService;
-import com.alibou.security.service.UserService;
+import com.alibou.security.service.JPA.PaymentServiceJPA;
+import com.alibou.security.service.JPA.UserServiceJPA;
 import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PaymentAPI {
     private static final Logger logger = LoggerFactory.getLogger(PaymentAPI.class);
-    private final PaymentService paymentService;
-    private final UserService userService;
+    private final PaymentServiceJPA paymentService;
+    private final UserServiceJPA userService;
 
     @PostMapping("/vnpay-process")
     public ResponseEntity<String> processPayment(@RequestBody PaymentRequest paymentRequest) {

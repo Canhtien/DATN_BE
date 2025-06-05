@@ -1,21 +1,18 @@
 package com.alibou.security.api.user;
 
-import com.alibou.security.entity.Ticket;
 import com.alibou.security.enums.TicketStatus;
 import com.alibou.security.mapper.TicketMapper;
 import com.alibou.security.model.request.TicketRequest;
 import com.alibou.security.model.response.TicketResponse;
 import com.alibou.security.repository.TicketRepository;
-import com.alibou.security.service.TicketService;
+import com.alibou.security.service.JPA.TicketServiceJPA;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContextException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,7 +21,7 @@ import java.util.List;
 @Slf4j
 public class TicketAPI {
 
-    private final TicketService ticketService;
+    private final TicketServiceJPA ticketService;
     private final Logger logger = LoggerFactory.getLogger(TicketAPI.class);
     private final TicketRepository ticketRepository;
     private final TicketMapper ticketMapper;

@@ -2,7 +2,7 @@ package com.alibou.security.api.admin;
 
 import com.alibou.security.model.request.PaymentMethodRequest;
 import com.alibou.security.model.response.PaymentMethodResponse;
-import com.alibou.security.service.PaymentMethodService;
+import com.alibou.security.service.JPA.PaymentMethodServiceJPA;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PaymentMethodAPI {
     private static final Logger logger = LoggerFactory.getLogger(DiscountAPI.class);
-    private final PaymentMethodService service;
+    private final PaymentMethodServiceJPA service;
 
     @GetMapping
     public ResponseEntity<?> findAllPaymentMethods() {

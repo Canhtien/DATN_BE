@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -52,4 +53,8 @@ public class Hall {
     @OneToMany(mappedBy = "hall")
     @JsonManagedReference
     private Set<Showtime> showtimes;
+
+    @OneToMany(mappedBy = "hall", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<SeatRow> seatRows = new HashSet<>();
 }

@@ -31,7 +31,6 @@ public class TicketMapperImpl implements TicketMapper {
         ticket.showtime( ticketRequestToShowtime( ticketRequest ) );
         ticket.user( ticketRequestToUser( ticketRequest ) );
         ticket.discountApplication( ticketRequestToDiscountApplication( ticketRequest ) );
-        ticket.seatNumber( ticketRequest.getSeatNumber() );
         ticket.ticketType( ticketRequest.getTicketType() );
         ticket.price( ticketRequest.getPrice() );
         ticket.serviceFee( ticketRequest.getServiceFee() );
@@ -57,7 +56,6 @@ public class TicketMapperImpl implements TicketMapper {
         ticketResponse.theaterName( ticketShowtimeTheaterName( ticket ) );
         ticketResponse.hallName( ticketShowtimeHallName( ticket ) );
         ticketResponse.id( ticket.getId() );
-        ticketResponse.seatNumber( ticket.getSeatNumber() );
         ticketResponse.ticketType( ticket.getTicketType() );
         ticketResponse.price( ticket.getPrice() );
         ticketResponse.serviceFee( ticket.getServiceFee() );
@@ -76,7 +74,6 @@ public class TicketMapperImpl implements TicketMapper {
             return;
         }
 
-        ticket.setSeatNumber( ticketRequest.getSeatNumber() );
         ticket.setTicketType( ticketRequest.getTicketType() );
         ticket.setPrice( ticketRequest.getPrice() );
         ticket.setServiceFee( ticketRequest.getServiceFee() );

@@ -43,8 +43,10 @@ public class Ticket {
     @JsonBackReference
     private Set<PaymentTicket> paymentTickets = new HashSet<>();
 
-    @Column(name = "seat_number", nullable = false)
-    private String seatNumber;
+    @ManyToOne
+    @JoinColumn(name = "seat_id")
+    @JsonBackReference
+    private Seat seat;
 
     @Column(name = "ticket_type", nullable = false)
     private String ticketType;

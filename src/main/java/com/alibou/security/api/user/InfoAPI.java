@@ -2,7 +2,7 @@ package com.alibou.security.api.user;
 
 import com.alibou.security.model.request.ChangePasswordRequest;
 import com.alibou.security.model.response.UserResponse;
-import com.alibou.security.service.UserService;
+import com.alibou.security.service.JPA.UserServiceJPA;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ import java.security.Principal;
 public class InfoAPI {
 
     private static final Logger logger = LoggerFactory.getLogger(InfoAPI.class);
-    private final UserService service;
+    private final UserServiceJPA service;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserInfo(@PathVariable Long id) {
