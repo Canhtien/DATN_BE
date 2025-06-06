@@ -62,16 +62,16 @@ public class MovieServiceJPA {
         Pageable pageable = PageRequest.of(page, size);
         return movieRepository.findAllWithPagination(pageable);
     }
-    public List<MovieResponse> getTopMoviesPaged(int page, int size) {
+    public List<Movie> getTopMoviesPaged(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return movieRepository.findTopWithPagination(pageable);
     }
 
-    public List<MovieResponse> getShowingMoviesPaged(int page, int size) {
+    public List<Movie> getShowingMoviesPaged(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return movieRepository.findShowingWithPagination(pageable);
     }
-    public List<MovieResponse> getCommingSoonMoviesPaged(int page, int size) {
+    public List<Movie> getCommingSoonMoviesPaged(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return movieRepository.findCommingSoonWithPagination(pageable);
     }

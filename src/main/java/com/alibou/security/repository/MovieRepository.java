@@ -29,17 +29,17 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Query(value = "SELECT * FROM movies WHERE release_date >= CURDATE() - INTERVAL 1 MONTH ORDER BY rating DESC",
             countQuery = "SELECT COUNT(*) FROM movies WHERE release_date >= CURDATE() - INTERVAL 1 MONTH",
             nativeQuery = true)
-    List<MovieResponse> findTopWithPagination(Pageable pageable);
+    List<Movie> findTopWithPagination(Pageable pageable);
 
-    @Query(value = "SELECT * FROM movies WHERE release_date >= CURDATE() - INTERVAL 1 MONTH ORDER BY rating DESC",
+    @Query(value = "SELECT * FROM movies WHERE release_date >= CURDATE() - INTERVAL 1 MONTH",
             countQuery = "SELECT COUNT(*) FROM movies WHERE release_date >= CURDATE() - INTERVAL 1 MONTH",
             nativeQuery = true)
-    List<MovieResponse> findShowingWithPagination(Pageable pageable);
+    List<Movie> findShowingWithPagination(Pageable pageable);
 
-    @Query(value = "SELECT * FROM movies WHERE release_date >= CURDATE() - INTERVAL 2 MONTH ORDER BY rating DESC",
+    @Query(value = "SELECT * FROM movies WHERE release_date >= CURDATE() - INTERVAL 2 MONTH ",
             countQuery = "SELECT COUNT(*) FROM movies WHERE release_date >= CURDATE() - INTERVAL 2 MONTH",
             nativeQuery = true)
-    List<MovieResponse> findCommingSoonWithPagination(Pageable pageable);
+    List<Movie> findCommingSoonWithPagination(Pageable pageable);
 
     @Query(value = """
     SELECT 
