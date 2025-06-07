@@ -1,5 +1,6 @@
 package com.alibou.security.service.JPA;
 
+import com.alibou.security.entity.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -40,17 +41,20 @@ public class JwtServiceJPA {
     return claimsResolver.apply(claims);
   }
 
-  public String generateToken(UserDetails userDetails, Long userId) {
+  public String generateToken(UserDetails userDetails, Long userId, Role userRole) {
     Map<String, Object> extraClaims = new HashMap<>();
     extraClaims.put("userId", userId);
+    extraClaims.put("userRole", userRole);
     return buildToken(extraClaims, userDetails, jwtExpiration);
   }
 
-  public String generateRefreshToken(UserDetails userDetails, Long userId) {
+  public String generateRefreshToken(UserDetails userDetails, Long userId, Role userRole) {
     Map<String, Object> extraClaims = new HashMap<>();
     extraClaims.put("userId", userId);
+    extraClaims.put("userRole", userRole);
     return buildToken(extraClaims, userDetails, refreshExpiration);
   }
+
 
   private String buildToken(
           Map<String, Object> extraClaims,

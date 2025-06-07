@@ -36,8 +36,6 @@ public class ShowtimeAPI {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
-
-
     @GetMapping("/{id}")
     public ResponseEntity<?> getShowtime(@PathVariable long id) {
         try {

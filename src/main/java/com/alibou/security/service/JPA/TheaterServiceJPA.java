@@ -71,8 +71,8 @@ public class TheaterServiceJPA {
                 .collect(Collectors.toList());
     }
     // dành cho cms
-    public List<TheaterDTO> getTheaterHierarchy() {
-        List<Object[]> rows = repository.findGroupedTheaterMovieData();
+    public List<TheaterDTO> getTheaterHierarchy(String location, String code) {
+        List<Object[]> rows = repository.findGroupedTheaterMovieData(location, code);
         Map<Long, TheaterDTO> theaterMap = new LinkedHashMap<>();
 
         for (Object[] row : rows) {
@@ -84,7 +84,8 @@ public class TheaterServiceJPA {
             String movieTitle = (String) row[5];
             Long showtimeId = ((Number) row[6]).longValue();
             LocalDateTime startTime = ((Timestamp) row[7]).toLocalDateTime();
-
+            String locationVal = (String) row[8];
+            String codeVal = (String) row[9];
             TheaterDTO theater = theaterMap.computeIfAbsent(theaterId, id -> new TheaterDTO(theaterId, theaterName));
             HallDTO hall = theater.getHalls().stream()
                     .filter(h -> h.getId().equals(hallId))

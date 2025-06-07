@@ -31,13 +31,11 @@ public class HallAPI {
             return ResponseEntity.status(500).body(null);
         }
     }
-
     @GetMapping("/pages")
     public ResponseEntity<Page<HallResponse>> findHallsByPages(@RequestParam(defaultValue = "0") int page,
                                                                @RequestParam(defaultValue = "10")int pagesize){
     return ResponseEntity.ok(service.getAllHallsPaged(page, pagesize));
     }
-
     @PostMapping
     public ResponseEntity<?> addHall(@RequestBody HallRequest request) {
         try {
@@ -52,7 +50,6 @@ public class HallAPI {
             return ResponseEntity.status(500).body("Internal server error");
         }
     }
-
     @PutMapping("/{id}")
     public ResponseEntity<?> changeHall(@RequestBody HallRequest request, @PathVariable Long id) {
         try {
@@ -67,7 +64,6 @@ public class HallAPI {
             return ResponseEntity.status(500).body("Internal server error");
         }
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteHall(@PathVariable Long id) {
         try {
@@ -82,7 +78,6 @@ public class HallAPI {
             return ResponseEntity.status(500).body("Internal server error");
         }
     }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleException(Exception e) {
         logger.error("Unhandled exception occurred: {}", e.getMessage());

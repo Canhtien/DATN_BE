@@ -53,8 +53,6 @@ public class TheaterAPI {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
-
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTheater(@PathVariable Long id) {
         try {

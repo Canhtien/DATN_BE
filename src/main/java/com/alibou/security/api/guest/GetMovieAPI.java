@@ -43,13 +43,13 @@ public class GetMovieAPI {
     //đang chiếu
     @GetMapping ("/now-showing-movies")
     public ResponseEntity<List<Movie>> getShowingMovie(@RequestParam(defaultValue = "0") int page,
-                                                           @RequestParam(defaultValue = "10")int pagesize){
+                                                           @RequestParam(defaultValue = "20")int pagesize){
         return ResponseEntity.ok(movieService.getShowingMoviesPaged(page, pagesize));
     }
     //comming soon
     @GetMapping ("/comming-soon-movies")
     public ResponseEntity<List<Movie>> getCommingSoonMovie(@RequestParam(defaultValue = "0") int page,
-                                                           @RequestParam(defaultValue = "10")int pagesize){
+                                                           @RequestParam(defaultValue = "20")int pagesize){
         return ResponseEntity.ok(movieService.getCommingSoonMoviesPaged(page, pagesize));
     }
 
@@ -92,8 +92,9 @@ public class GetMovieAPI {
         }
     }
     @GetMapping("/with-halls-and-movies")
-    public List<TheaterDTO> getTheaterHallMovieTree() {
-        return theaterService.getTheaterHierarchy();
+    public List<TheaterDTO> getTheaterHallMovieTree(@RequestParam(required = false)String location,
+                                                    @RequestParam(required = false)String code) {
+        return theaterService.getTheaterHierarchy(location, code);
     }
 
     @GetMapping("/theater/{theaterId}")
