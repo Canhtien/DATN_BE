@@ -5,6 +5,7 @@ import com.alibou.security.entity.Showtime;
 import com.alibou.security.entity.User;
 import com.alibou.security.enums.TicketStatus;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,12 +22,15 @@ import java.time.LocalDateTime;
 
 public class TicketRequest {
     Long id;
+    @NotNull
     Long showtime_id;
+    @NotNull
     Long user_id;
     Long discount_application_id;
 //    User user;
 //    Showtime showtime;
 //    DiscountApplication discountApplication;
+    @NotNull
     Long seatId;
     String ticketType;
     BigDecimal price = BigDecimal.ZERO;

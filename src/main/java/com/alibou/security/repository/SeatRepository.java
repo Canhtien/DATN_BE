@@ -8,8 +8,8 @@ import java.util.*;
 
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, Long> {
-//    boolean existsByTitle(Long id);
-    Optional<Seat> findById(Long Id);
+    boolean existsById(Long id);
+//    Optional<Seat> findById(Long Id);
 
     List<Seat> findBySeatRow_Hall_Id(Long hallId);
 

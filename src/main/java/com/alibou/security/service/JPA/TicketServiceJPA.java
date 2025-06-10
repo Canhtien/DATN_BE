@@ -1,9 +1,6 @@
 package com.alibou.security.service.JPA;
 
-import com.alibou.security.entity.DiscountApplication;
-import com.alibou.security.entity.Showtime;
-import com.alibou.security.entity.Ticket;
-import com.alibou.security.entity.User;
+import com.alibou.security.entity.*;
 import com.alibou.security.enums.TicketStatus;
 import com.alibou.security.mapper.TicketMapper;
 import com.alibou.security.model.request.TicketRequest;
@@ -45,6 +42,9 @@ public class TicketServiceJPA {
     @Autowired
     DiscountApplicationRepository discountApplicationRepository;
 
+    @Autowired
+    SeatRepository seatRepository;
+
     private static final Logger logger = LoggerFactory.getLogger(TicketServiceJPA.class);
     @Autowired
     private UserServiceJPA userService;
@@ -61,6 +61,9 @@ public class TicketServiceJPA {
         ticket.setCreatedAt(timestamp.toLocalDateTime());
         ticket.setUpdatedAt(timestamp.toLocalDateTime());
         ticket.setCreatedBy(userService.getCurrentUserId());
+
+        Seat seat = seatRepository.findById(ticketRequest.getSeatId()).orElseThrow(() -> new ApplicationContextException("Seat not found"));
+        ticket.setSeat(seat);
 
         User user = userRepository.findById(Math.toIntExact(ticketRequest.getUser_id())).orElseThrow(() -> new ApplicationContextException("User not found"));
         ticket.setUser(user);

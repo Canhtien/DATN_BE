@@ -41,6 +41,8 @@ public class Seat {
     @JsonBackReference
     private Ticket ticket;
 
+
+
 //    @ManyToOne
 //    @JoinColumn(name = "seat_price_id", nullable = false)
 //    @JsonBackReference
