@@ -10,4 +10,6 @@ public interface SeatRowService {
     SeatRowDTO create(SeatRowDTO dto);
     SeatRowDTO update(Long id, SeatRowDTO dto);
     void delete(Long id);
+
+    List<SeatRowDTO> getByHallId(Long HallId);
 }

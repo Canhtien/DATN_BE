@@ -2,7 +2,9 @@ package com.alibou.security.api.guest;
 
 
 import com.alibou.security.model.dto.SeatDTO;
+import com.alibou.security.model.dto.SeatRowDTO;
 import com.alibou.security.model.dto.SeatTypeDTO;
+import com.alibou.security.service.SeatRowService;
 import com.alibou.security.service.SeatService;
 import com.alibou.security.service.SeatTypeService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,8 @@ public class GetSeatAPI {
 
     private final SeatService seatService;
 
+    private final SeatRowService seatRowService;
+
     @GetMapping(value = "/seat-type")
     public List<SeatTypeDTO> getAllSeatType() {
         return seatTypeService.getAll();
@@ -30,6 +34,12 @@ public class GetSeatAPI {
     public ResponseEntity<List<SeatDTO>> getSeatByHallId(@PathVariable Long id){
         List<SeatDTO> seats = seatService.getSeatsByHallId(id);
         return ResponseEntity.ok(seats);
+    }
+
+    @GetMapping("/seat_rows/hall-id/{id}")
+    public ResponseEntity<List<SeatRowDTO>> getSeatRowByHallId(@PathVariable("id") Long hallId){
+        List<SeatRowDTO> seatRows = seatRowService.getByHallId(hallId);
+        return  ResponseEntity.ok(seatRows);
     }
 //    @GetMapping(value = "")
 //    public List<Seat> getAllSeat() {

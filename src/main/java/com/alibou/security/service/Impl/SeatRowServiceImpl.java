@@ -34,6 +34,15 @@ public class SeatRowServiceImpl implements SeatRowService {
     }
 
     @Override
+    public List<SeatRowDTO> getByHallId(Long HallId){
+        return Optional.of(seatRowRepository.findByHallId(HallId).stream()
+                        .map(this::toDto)
+                        .collect(Collectors.toList()))
+                .filter(list -> !list.isEmpty())
+                .orElseThrow(() -> new RuntimeException("SeatRow not found"));
+    }
+
+    @Override
     public SeatRowDTO create(SeatRowDTO dto) {
         Hall hall = hallRepository.findById(dto.getHallId())
                 .orElseThrow(() -> new RuntimeException("Hall not found"));
