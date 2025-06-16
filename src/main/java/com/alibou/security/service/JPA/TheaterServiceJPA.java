@@ -71,8 +71,8 @@ public class TheaterServiceJPA {
                 .collect(Collectors.toList());
     }
     // dành cho cms
-    public List<TheaterDTO> getTheaterHierarchy(String location, String code) {
-        List<Object[]> rows = repository.findGroupedTheaterMovieData(location, code);
+    public List<TheaterDTO> getTheaterHierarchy(String locationVal, String codeVal) {
+        List<Object[]> rows = repository.findGroupedTheaterMovieData(locationVal, codeVal);
         Map<Long, TheaterDTO> theaterMap = new LinkedHashMap<>();
 
         for (Object[] row : rows) {
@@ -82,11 +82,13 @@ public class TheaterServiceJPA {
             String hallName = (String) row[3];
             Long movieId = ((Number) row[4]).longValue();
             String movieTitle = (String) row[5];
-            Long showtimeId = ((Number) row[6]).longValue();
-            LocalDateTime startTime = ((Timestamp) row[7]).toLocalDateTime();
-            String locationVal = (String) row[8];
-            String codeVal = (String) row[9];
-            TheaterDTO theater = theaterMap.computeIfAbsent(theaterId, id -> new TheaterDTO(theaterId, theaterName));
+            String posterUrl = (String) row[6];
+            Long showtimeId = ((Number) row[7]).longValue();
+            LocalDateTime startTime = ((Timestamp) row[8]).toLocalDateTime();
+            String location = (String) row[9];
+            String code = (String) row[10];
+            String theatetImg = (String) row[11];
+            TheaterDTO theater = theaterMap.computeIfAbsent(theaterId, id -> new TheaterDTO(theaterId, theaterName,location,code,theatetImg));
             HallDTO hall = theater.getHalls().stream()
                     .filter(h -> h.getId().equals(hallId))
                     .findFirst()
@@ -100,7 +102,7 @@ public class TheaterServiceJPA {
                     .filter(m -> m.getId().equals(movieId))
                     .findFirst()
                     .orElseGet(() -> {
-                        MovieDTO newMovie = new MovieDTO(movieId, movieTitle);
+                        MovieDTO newMovie = new MovieDTO(movieId, movieTitle, posterUrl);
                         hall.getMovies().add(newMovie);
                         return newMovie;
                     });
@@ -144,7 +146,7 @@ public class TheaterServiceJPA {
             Integer seatNumber = ((Number) row[12]).intValue();
             String seatStatus = (String) row[13];
 
-            Long seatTypeId = ((Number) row[14]).longValue();
+            Long seatType = ((Number) row[14]).longValue();
             String seatTypeCode = (String) row[15];
             BigDecimal seatPrice = (BigDecimal) row[16];
 
@@ -189,7 +191,7 @@ public class TheaterServiceJPA {
             SeatDTO seat = new SeatDTO();
             seat.setId(seatId);
             seat.setSeatNumber(seatNumber);
-            seat.setSeatTypeId(seatTypeId);
+            seat.setSeatType(seatType);
             seat.setSeatTypeCode(seatTypeCode);
             seat.setSeatPrice(seatPrice);
 

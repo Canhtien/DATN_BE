@@ -35,7 +35,7 @@ public class TheaterAPI {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getTheaterById(@RequestBody TheaterRequest request, @PathVariable Long id){
+    public ResponseEntity<?> getTheaterById(@PathVariable Long id){
         return ResponseEntity.status(200).body(service.getById(id));
     }
 

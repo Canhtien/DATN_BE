@@ -37,10 +37,6 @@ public class Seat {
     @JsonBackReference
     private SeatRow seatRow;
 
-    @OneToOne(mappedBy = "seat")
-    @JsonBackReference
-    private Ticket ticket;
-
 
 
 //    @ManyToOne

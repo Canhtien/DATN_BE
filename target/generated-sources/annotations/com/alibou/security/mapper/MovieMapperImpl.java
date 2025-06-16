@@ -1,16 +1,18 @@
 package com.alibou.security.mapper;
 
 import com.alibou.security.entity.Movie;
+import com.alibou.security.model.dto.MovieLiteDTO;
 import com.alibou.security.model.request.MovieRequest;
 import com.alibou.security.model.response.MovieResponse;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.12 (Oracle Corporation)"
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.11 (Oracle Corporation)"
 )
 @Component
 public class MovieMapperImpl implements MovieMapper {
@@ -98,5 +100,32 @@ public class MovieMapperImpl implements MovieMapper {
         movie.setCreatedBy( request.getCreatedBy() );
         movie.setUpdatedBy( request.getUpdatedBy() );
         movie.setRating( request.getRating() );
+    }
+
+    @Override
+    public MovieLiteDTO toDto(Movie movie) {
+        if ( movie == null ) {
+            return null;
+        }
+
+        MovieLiteDTO movieLiteDTO = new MovieLiteDTO();
+
+        movieLiteDTO.setId( movie.getId() );
+        movieLiteDTO.setTitle( movie.getTitle() );
+        movieLiteDTO.setGenre( movie.getGenre() );
+        movieLiteDTO.setPosterUrl( movie.getPosterUrl() );
+        movieLiteDTO.setDirector( movie.getDirector() );
+        movieLiteDTO.setActor( movie.getActor() );
+        if ( movie.getRunTime() != null ) {
+            movieLiteDTO.setRunTime( String.valueOf( movie.getRunTime() ) );
+        }
+        movieLiteDTO.setSummary( movie.getSummary() );
+        movieLiteDTO.setTrailerUrl( movie.getTrailerUrl() );
+        movieLiteDTO.setThumbnailUrl( movie.getThumbnailUrl() );
+        if ( movie.getReleaseDate() != null ) {
+            movieLiteDTO.setReleaseDate( DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( movie.getReleaseDate() ) );
+        }
+
+        return movieLiteDTO;
     }
 }

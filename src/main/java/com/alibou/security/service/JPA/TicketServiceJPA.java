@@ -6,6 +6,7 @@ import com.alibou.security.mapper.TicketMapper;
 import com.alibou.security.model.request.TicketRequest;
 import com.alibou.security.model.response.TicketResponse;
 import com.alibou.security.repository.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -198,4 +200,15 @@ public class TicketServiceJPA {
     public List<TicketResponse> getTicketByUserId(long userId) {
         return ticketRepository.findAllByUserId(userId);
     }
-}
+        public List<TicketResponse> getTicketByShowtimeId(Long showtimeId) {
+            List<Object[]> results = ticketRepository.findAllByShowtimeId(showtimeId);
+            return results.stream()
+                    .map(obj -> {
+                        TicketResponse response = new TicketResponse();
+                        response.setStatus((TicketStatus) obj[0]);
+                        response.setSeatId((Long) obj[1]);
+                        return response;
+                    })
+                    .collect(Collectors.toList());
+        }
+ }

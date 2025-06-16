@@ -15,18 +15,18 @@ public class SeatDTO {
     private Long id;
     private Integer seatNumber;
     private Long seatRowId;
-    private Long seatTypeId;
+    private Long seatType;
     private Long hallId;
 
     private String seatTypeCode;
     private String seatStatus;
     private BigDecimal seatPrice;
 
-    public SeatDTO(Long seatId, Integer seatNumber, String seatStatus, Long seatTypeId, String seatTypeCode) {
+    public SeatDTO(Long seatId, Integer seatNumber, String seatStatus, Long seatType, String seatTypeCode) {
         this.id=seatId;
         this.seatNumber = seatNumber;
         this.seatStatus = seatStatus;
-        this.seatTypeId = seatTypeId;
+        this.seatType = seatType;
         this.seatTypeCode = seatTypeCode;
     }
 }

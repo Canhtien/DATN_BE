@@ -50,6 +50,10 @@ public class HallAPI {
             return ResponseEntity.status(500).body("Internal server error");
         }
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getHallById(@PathVariable Long id){
+        return ResponseEntity.status(200).body(service.getById(id));
+    }
     @PutMapping("/{id}")
     public ResponseEntity<?> changeHall(@RequestBody HallRequest request, @PathVariable Long id) {
         try {

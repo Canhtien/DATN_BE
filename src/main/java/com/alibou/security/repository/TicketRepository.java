@@ -45,6 +45,9 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             "LEFT JOIN s.hall h ")
     List<TicketResponse> findAllTickets();
 
+    @Query("SELECT t.status, t.seat.id FROM Ticket t WHERE t.showtime.id = :id")
+    List<Object[]> findAllByShowtimeId(@Param("id") Long id);
+
     @Modifying
     @Query("UPDATE Ticket t set t.showtime = null WHERE t.showtime.id IN (SELECT s.id FROM Showtime s WHERE s.movie.id = :movieId)")
     void setShowtimeIdToNull(@Param("movieId") Long movieId);

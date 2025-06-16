@@ -109,5 +109,12 @@ public class TicketAPI {
         }
         return ResponseEntity.ok(tickets);
     }
-
+    @GetMapping("/showtime/{id}")
+    public ResponseEntity<?> getTicketByShowtimeId(@PathVariable long id){
+        List<TicketResponse> tickets = ticketService.getTicketByShowtimeId(id);
+        if (tickets.isEmpty()) {
+            return ResponseEntity.ok("Ticket not found");
+        }
+        return ResponseEntity.ok(tickets);
+    }
 }

@@ -17,9 +17,10 @@ public interface TheaterRepository extends JpaRepository<Theater, Long> {
     @Query(value = """
     SELECT t.id AS theater_id, t.name AS theater_name,
            h.id AS hall_id, h.name AS hall_name,
-           m.id AS movie_id, m.title AS movie_title,
+           m.id AS movie_id, m.title AS movie_title, m.poster_url as posterUrl,
            s.id AS showtime_id, s.show_time,
-            t.location AS location, t.code AS code
+            t.location AS locationVal, t.code AS codeVal,
+            t.theater_img as theaterImg
     FROM theaters t
     JOIN halls h ON h.theater_id = t.id
     JOIN showtimes s ON s.hall_id = h.id
@@ -41,7 +42,7 @@ public interface TheaterRepository extends JpaRepository<Theater, Long> {
               h.id AS hall_id, h.name AS hall_name, h.status AS hall_status,
               sr.id AS seat_row_id, sr.row_name,
               s.id AS seat_id, s.seat_number, s.status AS seat_status,
-              stype.id AS seat_type_id, stype.code AS seat_type_code, stype.price AS seat_price
+              stype.id AS seat_type_id, style.code AS seat_type_code, stype.price AS seat_price
             FROM theaters t
             JOIN showtimes st ON st.theater_id = t.id
             JOIN halls h ON h.id = st.hall_id

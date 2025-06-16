@@ -15,7 +15,7 @@ public class HallRequest {
     private String name;
     @NotNull
     private Integer seatCapacity;
-    @NotNull
+
     private Long theaterId;
     @NotNull
     private HallStatus status;

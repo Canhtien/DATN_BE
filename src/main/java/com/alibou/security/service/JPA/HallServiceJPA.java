@@ -2,6 +2,7 @@ package com.alibou.security.service.JPA;
 
 import com.alibou.security.config.GeneralMapper;
 import com.alibou.security.entity.Hall;
+import com.alibou.security.entity.Theater;
 import com.alibou.security.model.request.HallRequest;
 import com.alibou.security.model.response.HallResponse;
 import com.alibou.security.repository.HallRepository;
@@ -26,6 +27,11 @@ public class HallServiceJPA {
     private final TheaterRepository theaterRepository;
     private final GeneralMapper generalMapper;
 
+    public Hall getById(Long id){
+        return repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Hall not found"));
+    }
+
     public HallResponse add(HallRequest request) {
         var existingHall = repository.findByName(request.getName());
         if (existingHall.isPresent()) {
@@ -42,14 +48,26 @@ public class HallServiceJPA {
     }
 
     public HallResponse change(HallRequest request, Long id) {
-        var existingHall = repository.findById(id)
+        Hall existingHall = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Hall not found"));
-        generalMapper.mapToEntity(request, existingHall);
+
+        // Chỉ cập nhật các trường cho phép thay đổi
+        existingHall.setName(request.getName());
+        existingHall.setSeatCapacity(request.getSeatCapacity());
+        existingHall.setStatus(request.getStatus());
+
+        // Nếu cần update theater
+        if (request.getTheaterId() != null && !request.getTheaterId().equals(existingHall.getTheater().getId())) {
+            Theater newTheater = theaterRepository.findById(request.getTheaterId())
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid theater ID"));
+            existingHall.setTheater(newTheater);
+        }
+
         existingHall.setUpdatedAt(LocalDateTime.now());
         existingHall.setUpdatedBy(userService.getCurrentUserId());
-        existingHall.setTheater(theaterRepository.findById(request.getTheaterId()).orElseThrow(() -> new IllegalArgumentException("Invalid theater ID")));
+
         repository.save(existingHall);
-        logger.info("Hall updated successfully: {}", existingHall);
+
         return generalMapper.mapToDTO(existingHall, HallResponse.class);
     }
 

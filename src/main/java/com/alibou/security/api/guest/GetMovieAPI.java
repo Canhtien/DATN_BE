@@ -36,7 +36,7 @@ public class GetMovieAPI {
     //top phim
     @GetMapping ("/top-movies")
     public ResponseEntity<List<Movie>> getTopMovie(@RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10")int pagesize){
+        @RequestParam(defaultValue = "20")int pagesize){
             return ResponseEntity.ok(movieService.getTopMoviesPaged(page, pagesize));
         }
 

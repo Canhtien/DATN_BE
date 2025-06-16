@@ -2,6 +2,8 @@ package com.alibou.security.api.admin;
 
 import com.alibou.security.entity.Movie;
 import com.alibou.security.mapper.MovieMapper;
+import com.alibou.security.model.dto.MovieDTO;
+import com.alibou.security.model.dto.MovieLiteDTO;
 import com.alibou.security.model.request.MovieRequest;
 import com.alibou.security.model.response.MovieResponse;
 import com.alibou.security.service.JPA.MovieServiceJPA;
@@ -40,10 +42,12 @@ public class MovieAPI {
         }
     }
     @GetMapping("")
-    public ResponseEntity<Page<Movie>> getMovies(
+    public ResponseEntity<Page<MovieLiteDTO>> searchMovies(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String genre,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int pagesize) {
-        return ResponseEntity.ok(movieService.getAllMoviesPaged(page, pagesize));
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(movieService.searchMovies(title, genre, page, size));
     }
 
 

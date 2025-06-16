@@ -124,10 +124,13 @@ public class UserServiceJPA {
                 .map(user -> generalMapper.mapToDTO(user, UserResponse.class))
                 .toList();
     }
-    public Page<UserResponse> getAllUsersPaged(int page, int size) {
+    public Page<UserResponse> getAllUsersPaged(String usernameKeyword, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<User> users = userRepository.findAllWithPagination(pageable);
-        return users.map(userMapper::toUserResponse);
+        if (usernameKeyword == null || usernameKeyword.isBlank()) {
+            return userRepository.findAll(pageable).map(userMapper::toUserResponse);
+        }
+        return userRepository.findAllByUsernameContaining(usernameKeyword, pageable)
+                .map(userMapper::toUserResponse);
     }
 
     public UserResponse updateUserInfo(Long id, UserResponse user) {

@@ -5,10 +5,7 @@ import com.alibou.security.entity.MovieReview;
 import com.alibou.security.entity.Showtime;
 import com.alibou.security.mapper.MovieMapper;
 import com.alibou.security.mapper.MovieReviewMapper;
-import com.alibou.security.model.dto.MovieDTO;
-import com.alibou.security.model.dto.SeatDTO;
-import com.alibou.security.model.dto.SeatTypeDTO;
-import com.alibou.security.model.dto.ShowTimeDTO;
+import com.alibou.security.model.dto.*;
 import com.alibou.security.model.request.MovieRequest;
 import com.alibou.security.model.response.MovieResponse;
 import com.alibou.security.model.response.MovieReviewResponse;
@@ -58,9 +55,12 @@ public class MovieServiceJPA {
     public List<Movie> getAllMovies() {
         return movieRepository.findAll();
     }
-    public Page<Movie> getAllMoviesPaged(int page, int size) {
+
+    public Page<MovieLiteDTO> searchMovies(String title, String genre, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return movieRepository.findAllWithPagination(pageable);
+        return movieRepository
+                .searchByTitleAndGenre(title, genre, pageable)
+                .map(movieMapper::toDto);
     }
     public List<Movie> getTopMoviesPaged(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -99,6 +99,7 @@ public class MovieServiceJPA {
                     // Chỉ gán "N/A" nếu không có dữ liệu thực tế
                     showtimeResponse.setTheaterName(showTime.getTheater().getName());
                     showtimeResponse.setHallName(showTime.getHall().getName());
+                    showtimeResponse.setHallId(showTime.getHall().getId());
                     return showtimeResponse;
                 })
                 .collect(Collectors.toSet());
@@ -196,7 +197,7 @@ public class MovieServiceJPA {
             String seatTypeCode = (String) row[8];
             BigDecimal seatPrice = (BigDecimal) row[9];
 
-            MovieDTO movie = movieMap.computeIfAbsent(movieId, id -> new MovieDTO(id, movieTitle));
+            MovieDTO movie = movieMap.computeIfAbsent(movieId, id -> new MovieDTO(id, movieTitle,null));
             ShowTimeDTO showtime = movie.getShowtimes().stream()
                     .filter(st -> st.getId().equals(showtimeId))
                     .findFirst()

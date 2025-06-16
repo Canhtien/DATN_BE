@@ -1,6 +1,7 @@
 package com.alibou.security.repository;
 
 import com.alibou.security.entity.Movie;
+import com.alibou.security.model.dto.MovieDTO;
 import com.alibou.security.model.response.MovieResponse;
 import jakarta.persistence.Entity;
 import org.springframework.data.domain.Page;
@@ -22,9 +23,14 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Query("SELECT m FROM Movie m LEFT JOIN FETCH m.showtimes WHERE m.id = :id")
     Optional<Movie> findById(@Param("id") Long id);
 
-    @Query(value = "SELECT m FROM Movie m",
-            countQuery = "SELECT COUNT(m) FROM Movie m")
-    Page<Movie> findAllWithPagination(Pageable pageable);
+    @Query(value = "SELECT m FROM Movie m " +
+            "WHERE (:title IS NULL OR LOWER(m.title) LIKE LOWER(CONCAT('%', :title, '%'))) " +
+            "AND (:genre IS NULL OR LOWER(m.genre) LIKE LOWER(CONCAT('%', :genre, '%')))",
+            countQuery = "SELECT COUNT(m) FROM Movie m ")
+    Page<Movie> searchByTitleAndGenre(
+            @Param("title") String title,
+            @Param("genre") String genre,
+            Pageable pageable);
 
     @Query(value = "SELECT * FROM movies WHERE release_date >= CURDATE() - INTERVAL 1 MONTH ORDER BY rating DESC",
             countQuery = "SELECT COUNT(*) FROM movies WHERE release_date >= CURDATE() - INTERVAL 1 MONTH",

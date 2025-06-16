@@ -43,7 +43,7 @@ public class SeatServiceImpl implements SeatService {
         seat.setSeatRow(seatRow);
 
         // Set loại ghế
-        SeatType seatType = seatTypeRepo.findById(dto.getSeatTypeId())
+        SeatType seatType = seatTypeRepo.findById(dto.getSeatType())
                 .orElseThrow(() -> new RuntimeException("SeatType not found"));
         seat.setSeatType(seatType);
 
@@ -54,7 +54,7 @@ public class SeatServiceImpl implements SeatService {
         Seat seat = repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Seat not found"));
         seat.setSeatNumber(dto.getSeatNumber());
-        seat.setSeatType(seatTypeRepo.findById(dto.getSeatTypeId())
+        seat.setSeatType(seatTypeRepo.findById(dto.getSeatType())
                 .orElseThrow(() -> new RuntimeException("SeatType not found")));
         seat.setSeatRow(seatRowRepo.findById(dto.getSeatRowId())
                 .orElseThrow(() -> new RuntimeException("SeatRow not found")));

@@ -10,8 +10,11 @@ public class SeatMapper {
     public SeatDTO toDto(Seat seat) {
         SeatDTO dto = new SeatDTO();
         dto.setId(seat.getId());
+        dto.setSeatNumber(seat.getSeatNumber());
         dto.setSeatRowId(seat.getSeatRow().getId());
         dto.setHallId(seat.getSeatRow().getHall().getId());
+        dto.setSeatStatus(String.valueOf(seat.getStatus()));
+        dto.setSeatType(seat.getSeatType().getId());
         return dto;
     }
 

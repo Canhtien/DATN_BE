@@ -18,4 +18,5 @@ public class ShowtimeResponse {
      String movieTitle;
      String theaterName;
      String hallName;
+     Long hallId;
 }

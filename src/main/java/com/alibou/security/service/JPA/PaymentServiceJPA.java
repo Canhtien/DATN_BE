@@ -187,7 +187,7 @@ public class PaymentServiceJPA {
 
         // 🆕 **Trả về URL thanh toán và mã QR**
         JsonObject response = new JsonObject();
-//        response.addProperty("paymentUrl", paymentUrl);
+        response.addProperty("paymentUrl", paymentUrl);
         response.addProperty("qrCode", "data:image/png;base64," + qrCodeBase64); // Base64 để dễ hiển thị trên web
         return response;
     }

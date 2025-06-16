@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/guest/seats")
+@RequestMapping("/api/guest")
 @RequiredArgsConstructor
 public class GetSeatAPI {
     private final SeatTypeService seatTypeService;
@@ -30,6 +30,7 @@ public class GetSeatAPI {
     public List<SeatTypeDTO> getAllSeatType() {
         return seatTypeService.getAll();
     }
+
     @GetMapping("/seats/hall-id/{id}")
     public ResponseEntity<List<SeatDTO>> getSeatByHallId(@PathVariable Long id){
         List<SeatDTO> seats = seatService.getSeatsByHallId(id);
@@ -41,12 +42,4 @@ public class GetSeatAPI {
         List<SeatRowDTO> seatRows = seatRowService.getByHallId(hallId);
         return  ResponseEntity.ok(seatRows);
     }
-//    @GetMapping(value = "")
-//    public List<Seat> getAllSeat() {
-//        return seatService.getAll();
-//    }
-
-
-//    @GetMapping(value = "/hall/{id}")
-//    public List<Seat> getAllSeatOfHallId()
 }

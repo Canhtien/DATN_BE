@@ -31,9 +31,11 @@ public class AccountAPI {
         }
     }
     @GetMapping("/pages")
-    public ResponseEntity<Page<UserResponse>> findAllUser(@RequestParam(defaultValue = "0") int page,
-                                                  @RequestParam(defaultValue = "10") int pagesize) {
-        return ResponseEntity.ok(service.getAllUsersPaged(page, pagesize));
+    public ResponseEntity<Page<UserResponse>> findAllUser(
+            @RequestParam(defaultValue = "") String username,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int pagesize) {
+        return ResponseEntity.ok(service.getAllUsersPaged(username, page, pagesize));
     }
 
     @PutMapping("/{id}/role/{roleId}")

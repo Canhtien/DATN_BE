@@ -1,6 +1,8 @@
 package com.alibou.security.mapper;
 
 import com.alibou.security.entity.Movie;
+import com.alibou.security.model.dto.MovieDTO;
+import com.alibou.security.model.dto.MovieLiteDTO;
 import com.alibou.security.model.request.MovieRequest;
 import com.alibou.security.model.response.MovieResponse;
 import org.mapstruct.Mapper;
@@ -20,4 +22,9 @@ public interface MovieMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     void updateMovie(@MappingTarget Movie movie, MovieRequest request);
+
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "title", source = "title")
+    @Mapping(target = "genre", source = "genre")
+    MovieLiteDTO toDto(Movie movie);
 }
