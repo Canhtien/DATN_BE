@@ -40,16 +40,7 @@ public class TicketAPI {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<TicketResponse>> getAllTickets() {
-        try {
-            List<TicketResponse> tickets = ticketService.getAllTicket();
-            return ResponseEntity.ok(tickets);
-        } catch (Throwable e) {
-            logger.error("Error getting all tickets.", e.getMessage());
-            return ResponseEntity.status(500).body(null);
-        }
-    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getTicket(@PathVariable long id) {
