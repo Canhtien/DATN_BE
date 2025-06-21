@@ -102,7 +102,7 @@ public class TheaterServiceJPA {
                     .filter(m -> m.getId().equals(movieId))
                     .findFirst()
                     .orElseGet(() -> {
-                        MovieDTO newMovie = new MovieDTO(movieId, movieTitle, posterUrl);
+                        MovieDTO newMovie = new MovieDTO(movieId, movieTitle, posterUrl, null);
                         hall.getMovies().add(newMovie);
                         return newMovie;
                     });

@@ -62,18 +62,42 @@ public class MovieServiceJPA {
                 .searchByTitleAndGenre(title, genre, pageable)
                 .map(movieMapper::toDto);
     }
-    public List<Movie> getTopMoviesPaged(int page, int size) {
+    public List<MovieDTO> getTopMoviesPaged(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return movieRepository.findTopWithPagination(pageable);
+        List<Movie> movies = movieRepository.findTopWithPagination(pageable);
+        return movies.stream()
+                .map(movie -> new MovieDTO(
+                        movie.getId(),
+                        movie.getTitle(),
+                        movie.getPosterUrl(),
+                        movie.getRating()
+                ))
+                .collect(Collectors.toList());
     }
 
-    public List<Movie> getShowingMoviesPaged(int page, int size) {
+    public List<MovieDTO> getShowingMoviesPaged(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return movieRepository.findShowingWithPagination(pageable);
+        List<Movie> movies = movieRepository.findShowingWithPagination(pageable);
+        return movies.stream()
+                .map(movie -> new MovieDTO(
+                        movie.getId(),
+                        movie.getTitle(),
+                        movie.getPosterUrl(),
+                        movie.getRating()
+                ))
+                .collect(Collectors.toList());
     }
-    public List<Movie> getCommingSoonMoviesPaged(int page, int size) {
+    public List<MovieDTO> getCommingSoonMoviesPaged(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return movieRepository.findCommingSoonWithPagination(pageable);
+        List<Movie> movies = movieRepository.findCommingSoonWithPagination(pageable);
+        return movies.stream()
+                .map(movie -> new MovieDTO(
+                        movie.getId(),
+                        movie.getTitle(),
+                        movie.getPosterUrl(),
+                        movie.getRating()
+                ))
+                .collect(Collectors.toList());
     }
 
     public MovieResponse getMovieById(long id) {
@@ -197,7 +221,7 @@ public class MovieServiceJPA {
             String seatTypeCode = (String) row[8];
             BigDecimal seatPrice = (BigDecimal) row[9];
 
-            MovieDTO movie = movieMap.computeIfAbsent(movieId, id -> new MovieDTO(id, movieTitle,null));
+            MovieDTO movie = movieMap.computeIfAbsent(movieId, id -> new MovieDTO(id, movieTitle,null, null));
             ShowTimeDTO showtime = movie.getShowtimes().stream()
                     .filter(st -> st.getId().equals(showtimeId))
                     .findFirst()

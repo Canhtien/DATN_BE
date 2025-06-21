@@ -35,20 +35,20 @@ public class GetMovieAPI {
     }
     //top phim
     @GetMapping ("/top-movies")
-    public ResponseEntity<List<Movie>> getTopMovie(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<List<MovieDTO>> getTopMovie(@RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20")int pagesize){
             return ResponseEntity.ok(movieService.getTopMoviesPaged(page, pagesize));
         }
 
     //đang chiếu
     @GetMapping ("/now-showing-movies")
-    public ResponseEntity<List<Movie>> getShowingMovie(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<List<MovieDTO>> getShowingMovie(@RequestParam(defaultValue = "0") int page,
                                                            @RequestParam(defaultValue = "20")int pagesize){
         return ResponseEntity.ok(movieService.getShowingMoviesPaged(page, pagesize));
     }
     //comming soon
     @GetMapping ("/comming-soon-movies")
-    public ResponseEntity<List<Movie>> getCommingSoonMovie(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<List<MovieDTO>> getCommingSoonMovie(@RequestParam(defaultValue = "0") int page,
                                                            @RequestParam(defaultValue = "20")int pagesize){
         return ResponseEntity.ok(movieService.getCommingSoonMoviesPaged(page, pagesize));
     }

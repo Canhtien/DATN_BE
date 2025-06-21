@@ -22,11 +22,14 @@ public class MovieDTO {
     private String trailerUrl;
     private String thumbnailUrl;
     private String releaseDate;
+    private Double rating;
     private List<ShowTimeDTO> showtimes = new ArrayList<>();
-    public MovieDTO(Long id, String title, String posterUrl) {
+    public MovieDTO(Long id, String title, String posterUrl, Double rating, String thumbnailUrl) {
         this.id = id;
         this.title = title;
         this.posterUrl = posterUrl;
+        this.thumbnailUrl = thumbnailUrl;
+        this.rating = rating;
     }
     public void addShowtime(ShowTimeDTO showtime) {
         if (showtimes.stream().noneMatch(s -> s.getId().equals(showtime.getId()))) {
