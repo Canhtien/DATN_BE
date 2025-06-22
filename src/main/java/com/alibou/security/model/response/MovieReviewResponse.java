@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MovieReviewResponse {
 
@@ -26,4 +25,15 @@ public class MovieReviewResponse {
     LocalDateTime updatedAt = LocalDateTime.now();
     Long createdBy;
     Long updatedBy;
+
+    public MovieReviewResponse(String username, String movieTitle, String content, Double rating, LocalDateTime createdAt, LocalDateTime updatedAt, Long createdBy, Long updatedBy) {
+        this.username = username;
+        this.movieTitle = movieTitle;
+        this.content = content;
+        this.rating = rating;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.createdBy = createdBy;
+        this.updatedBy = updatedBy;
+    }
 }

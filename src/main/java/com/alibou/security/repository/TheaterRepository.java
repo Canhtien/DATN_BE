@@ -26,11 +26,13 @@ public interface TheaterRepository extends JpaRepository<Theater, Long> {
     JOIN showtimes s ON s.hall_id = h.id
     JOIN movies m ON m.id = s.movie_id
     WHERE s.show_time >= CURDATE() - INTERVAL 1 MONTH
+      AND (:name IS NULL OR LOWER(t.name) LIKE LOWER(CONCAT('%', :name, '%')))
       AND (:location IS NULL OR LOWER(t.location) LIKE LOWER(CONCAT('%', :location, '%')))
       AND (:code IS NULL OR t.code = :code)
     ORDER BY t.id, h.id, m.id, s.id
     """, nativeQuery = true)
     List<Object[]> findGroupedTheaterMovieData(
+            @Param("name") String name,
             @Param("location") String location,
             @Param("code") String code
     );

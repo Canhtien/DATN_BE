@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,9 +27,14 @@ public class MovieReviewAPI {
     private final TicketServiceJPA ticketService;
 
     @GetMapping
-    public ResponseEntity<List<MovieReview>> getMovieReviews() {
+    public ResponseEntity<Page<MovieReviewResponse>> getMovieReviews(
+            @RequestParam(required = false)String userName,
+            @RequestParam(required = false)String movieTitle,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20")int pagesize
+    ) {
         try {
-            List<MovieReview> movieReviews = movieReviewService.findAllMovieReviews();
+            Page<MovieReviewResponse> movieReviews = movieReviewService.findAllMovieReviews(movieTitle, userName, page, pagesize);
             return ResponseEntity.ok(movieReviews);
         } catch (Exception e) {
             logger.error("Error show all comment.", e.getMessage());

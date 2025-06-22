@@ -12,6 +12,9 @@ import com.alibou.security.repository.TicketRepository;
 import com.alibou.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -32,9 +35,22 @@ public class MovieReviewServiceJPA {
     @Autowired
     private TicketRepository ticketRepository;
 
-    public List<MovieReview> findAllMovieReviews() {
-//        List<MovieReview> movieReviews = movieReviewRepository.findAll();
-        return movieReviewRepository.findAll();
+    public Page<MovieReviewResponse> findAllMovieReviews(String movieTitle, String userName, int page, int pagesize) {
+        Pageable pageable = PageRequest.of(page, pagesize);
+        Page<MovieReviewResponse> reviews = movieReviewRepository.findMovieReviewByMovieOrUser(movieTitle, userName, pageable);
+
+//        return reviews.stream().map(review -> new MovieReviewResponse(
+//                review.getUser() != null ? review.getUser().getUsername() : null,
+//                review.getMovie() != null ? review.getMovie().getTitle() : null,
+//                review.getContent(),
+//                review.getRating(),
+//                review.getCreatedAt(),
+//                review.getUpdatedAt(),
+//                review.getCreatedBy(),
+//                review.getUpdatedBy()
+//                )).toList();
+        return reviews;
+
     }
 
     public MovieReviewResponse findById(long id) {

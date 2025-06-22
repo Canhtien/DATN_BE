@@ -70,7 +70,8 @@ public class MovieServiceJPA {
                         movie.getId(),
                         movie.getTitle(),
                         movie.getPosterUrl(),
-                        movie.getRating()
+                        movie.getRating(),
+                        movie.getThumbnailUrl()
                 ))
                 .collect(Collectors.toList());
     }
@@ -83,7 +84,8 @@ public class MovieServiceJPA {
                         movie.getId(),
                         movie.getTitle(),
                         movie.getPosterUrl(),
-                        movie.getRating()
+                        movie.getRating(),
+                        movie.getThumbnailUrl()
                 ))
                 .collect(Collectors.toList());
     }
@@ -95,7 +97,8 @@ public class MovieServiceJPA {
                         movie.getId(),
                         movie.getTitle(),
                         movie.getPosterUrl(),
-                        movie.getRating()
+                        movie.getRating(),
+                        movie.getThumbnailUrl()
                 ))
                 .collect(Collectors.toList());
     }
@@ -221,7 +224,7 @@ public class MovieServiceJPA {
             String seatTypeCode = (String) row[8];
             BigDecimal seatPrice = (BigDecimal) row[9];
 
-            MovieDTO movie = movieMap.computeIfAbsent(movieId, id -> new MovieDTO(id, movieTitle,null, null));
+            MovieDTO movie = movieMap.computeIfAbsent(movieId, id -> new MovieDTO(id, movieTitle,null, null, null));
             ShowTimeDTO showtime = movie.getShowtimes().stream()
                     .filter(st -> st.getId().equals(showtimeId))
                     .findFirst()

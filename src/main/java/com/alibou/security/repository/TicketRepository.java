@@ -2,8 +2,11 @@ package com.alibou.security.repository;
 
 import com.alibou.security.entity.Showtime;
 import com.alibou.security.entity.Ticket;
+import com.alibou.security.enums.TicketStatus;
 import com.alibou.security.model.response.TicketResponse;
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -20,11 +23,39 @@ import java.util.Optional;
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
     boolean existsById(Long id);
     void deleteByShowtimeId(Long showtimeId);
+    List<Ticket> findByStatus(TicketStatus status);
+
 
     @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Ticket t WHERE t.showtime.id = :showtimeId AND t.seat.id = :seatId")
     boolean existsByShowtimeIdAndSeatId(@Param("showtimeId") Long showtimeId, @Param("seatId") Long seatId);
 
-    @Query("SELECT new com.alibou.security.model.response.TicketResponse(t.id, t.seat.id, t.ticketType, t.price, " +
+    @Query("SELECT new com.alibou.security.model.response.TicketResponse(" +
+            "t.id, " +
+            "CONCAT(r.rowName, '', t.seat.seatNumber), " +  // lấy mã ghế thực tế
+            "t.ticketType, " +
+            "t.price, " +
+            "t.serviceFee, " +
+            "t.status, " +
+            "t.createdAt, " +
+            "t.updatedAt, " +
+            "t.createdBy, " +
+            "t.updatedBy, " +
+            "s.showTime, " +
+            "m.title, " +
+            "th.name, " +
+            "h.name) " +
+            "FROM Ticket t " +
+            "LEFT JOIN t.showtime s " +
+            "LEFT JOIN s.movie m " +
+            "LEFT JOIN s.theater th " +
+            "LEFT JOIN s.hall h " +
+            "LEFT JOIN t.seat seat " +
+            "LEFT JOIN seat.seatRow r " +
+            "WHERE t.user.id = :userId")
+    List<TicketResponse> findAllByUserId(@Param("userId") Long userId);
+
+
+    @Query(value = "SELECT new com.alibou.security.model.response.TicketResponse(t.id, t.seat.id, t.ticketType, t.price, " +
             "t.serviceFee, t.status, t.createdAt, t.updatedAt, t.createdBy, t.updatedBy, " +
             "s.showTime, m.title, th.name, h.name) " +
             "FROM Ticket t " +
@@ -32,18 +63,9 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             "LEFT JOIN s.movie m " +
             "LEFT JOIN s.theater th " +
             "LEFT JOIN s.hall h " +
-            "WHERE t.user.id = :userId")
-    List<TicketResponse> findAllByUserId(@Param("userId") Long userId);
-
-    @Query("SELECT new com.alibou.security.model.response.TicketResponse(t.id, t.seat.id, t.ticketType, t.price, " +
-            "t.serviceFee, t.status, t.createdAt, t.updatedAt, t.createdBy, t.updatedBy, " +
-            "s.showTime, m.title, th.name, h.name) " +
-            "FROM Ticket t " +
-            "LEFT JOIN t.showtime s " +
-            "LEFT JOIN s.movie m " +
-            "LEFT JOIN s.theater th " +
-            "LEFT JOIN s.hall h ")
-    List<TicketResponse> findAllTickets();
+            "WHERE (:id IS NULL OR t.id = :id)",
+            countQuery = "SELECT COUNT(t) FROM Ticket t")
+    Page<TicketResponse> findAllTickets(@Param("id")Long id, Pageable pageable);
 
     @Query("SELECT t.status, t.seat.id FROM Ticket t WHERE t.showtime.id = :id")
     List<Object[]> findAllByShowtimeId(@Param("id") Long id);

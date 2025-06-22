@@ -1,35 +1,20 @@
 package com.alibou.security.service.JPA;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+
+import com.alibou.security.config.OAuth2MailSender;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class EmailService {
 
-    private final JavaMailSender mailSender;
-
-    @Value("${gmail.email}")
-    private String fromEmail;
+    private final OAuth2MailSender mailSender;
 
     public void sendOtpEmail(String toEmail, String otpCode) {
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-            helper.setFrom(fromEmail);
-            helper.setTo(toEmail);
-            helper.setSubject("OTP Quên Mật Khẩu");
-            helper.setText("Mã OTP của bạn là: " + otpCode, true);
-
-            mailSender.send(message);
-        } catch (MessagingException e) {
-            throw new RuntimeException("Gửi email thất bại", e);
-        }
+        String subject = "OTP Quên Mật Khẩu";
+        String body = "<h3>Mã OTP của bạn là: <b>" + otpCode + "</b></h3>";
+        mailSender.sendEmail(toEmail, subject, body);
     }
 }
+

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin/users")
@@ -32,10 +33,10 @@ public class AccountAPI {
     }
     @GetMapping("/pages")
     public ResponseEntity<Page<UserResponse>> findAllUser(
-            @RequestParam(defaultValue = "") String username,
+            @RequestParam(defaultValue = "") String name,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int pagesize) {
-        return ResponseEntity.ok(service.getAllUsersPaged(username, page, pagesize));
+        return ResponseEntity.ok(service.getAllUsersPaged(name, page, pagesize));
     }
 
     @PutMapping("/{id}/role/{roleId}")
@@ -43,13 +44,14 @@ public class AccountAPI {
         try {
             service.changeRole(id, roleId);
             logger.info("Updated user role successfully: {}", id);
-            return ResponseEntity.status(200).body("User role updated successfully");
+//            return ResponseEntity.status(200).body("User role updated successfully");
+            return ResponseEntity.ok(Map.of("message", "Cập nhật vai trò thành công"));
         } catch (IllegalArgumentException e) {
             logger.error("Failed to update user role with ID: {}", e.getMessage());
-            return ResponseEntity.status(400).body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             logger.error("Failed to update user role with ID {}: {}", id, e.getMessage());
-            return ResponseEntity.status(500).body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -61,7 +63,7 @@ public class AccountAPI {
             return ResponseEntity.ok().body(userResponse);
         }catch (Exception e) {
             logger.error("Error blocking user: {}", e);
-            return ResponseEntity.status(500).body("Error blocking user");
+            return ResponseEntity.badRequest().body("Error blocking user");
         }
     }
 

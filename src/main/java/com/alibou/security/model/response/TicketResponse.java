@@ -29,6 +29,7 @@ public class TicketResponse {
     DiscountApplication discountApplication;
     Long id;
     Long seatId;
+    String seatCode;
     String ticketType;
     BigDecimal price = BigDecimal.ZERO;
     BigDecimal serviceFee = BigDecimal.ZERO;
@@ -62,4 +63,26 @@ public class TicketResponse {
         this.theaterName = theaterName;
         this.hallName = hallName;
     }
+    public TicketResponse(Long id, String seatCode, String ticketType, BigDecimal price, BigDecimal serviceFee,
+                          TicketStatus status, LocalDateTime createdAt, LocalDateTime updatedAt, Long createdBy,
+                          Long updatedBy, LocalDateTime showTime, String movieTitle, String theaterName,
+                          String hallName) {
+        this.id = id;
+//        this.seatId = null;  // hoặc bỏ luôn nếu không cần
+        // thêm field mới seatCode
+        this.seatCode = seatCode;
+        this.ticketType = ticketType;
+        this.price = price;
+        this.serviceFee = serviceFee;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.createdBy = createdBy;
+        this.updatedBy = updatedBy;
+        this.showTime = showTime;
+        this.movieTitle = movieTitle;
+        this.theaterName = theaterName;
+        this.hallName = hallName;
+    }
+
 }

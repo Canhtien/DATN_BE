@@ -29,7 +29,9 @@ public class GetMovieAPI {
     private final TheaterServiceJPA theaterService;
 
     @GetMapping ("/movies")
-    public ResponseEntity<List<Movie>> getMovieList() {
+    public ResponseEntity<List<Movie>> getMovieList(
+
+    ) {
         List<Movie> movies = movieService.getAllMovies();
         return ResponseEntity.ok(movies);
     }
@@ -93,8 +95,9 @@ public class GetMovieAPI {
     }
     @GetMapping("/with-halls-and-movies")
     public List<TheaterDTO> getTheaterHallMovieTree(@RequestParam(required = false)String location,
+                                                    @RequestParam(required = false)String name,
                                                     @RequestParam(required = false)String code) {
-        return theaterService.getTheaterHierarchy(location, code);
+        return theaterService.getTheaterHierarchy(name, location, code);
     }
 
     @GetMapping("/theater/{theaterId}")

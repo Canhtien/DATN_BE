@@ -17,10 +17,12 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -84,7 +86,7 @@ public class AuthenticationServiceJPA {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid username or email"));
         if (!user.isStatus()) {
             logger.info("User is blocked.");
-            return null;
+            throw new IllegalArgumentException("Tài khoản của bạn đã bị khóa.");
         }
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

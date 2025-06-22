@@ -12,6 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -97,16 +100,16 @@ public class TicketServiceJPA {
     }
 
     public void deleteTicket(long id) {
-        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new ApplicationContextException("Ticket does not exist"));
+        if (!ticketRepository.existsById(id)) {
+            throw new ApplicationContextException("Ticket does not exist");
+        }
         ticketRepository.deleteById(id);
-        showTimeRepository.deleteById(ticket.getId());
-        userRepository.deleteById(Math.toIntExact(ticket.getId()));
-        discountRepository.deleteById(ticket.getId());
-
     }
 
-    public List<TicketResponse> getAllTicket() {
-        return ticketRepository.findAllTickets();
+
+    public Page<TicketResponse> getAllTicket(Long id, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ticketRepository.findAllTickets(id, pageable);
     }
 
     public TicketResponse getTicket(long id) {
@@ -117,52 +120,42 @@ public class TicketServiceJPA {
 
     @Transactional
     @Scheduled(cron = "0 */20 * * * ?")
-    public ResponseEntity<List<TicketResponse>> CheckExpiredTicket() {
-        List<TicketResponse> ticketResponses = ticketRepository.findAllTickets();
-        List<TicketResponse> expiredTickets = new ArrayList<>();
+    public ResponseEntity<List<Long>> deleteExpiredPendingTickets() {
+        // Lấy danh sách tất cả các vé có status PENDING
+        List<Ticket> pendingTickets = ticketRepository.findByStatus(TicketStatus.PENDING);
+        List<Long> deletedTicketIds = new ArrayList<>();
 
-        if(ticketResponses.isEmpty()) {
-            logger.info("Tickets list is empty");
+        if (pendingTickets.isEmpty()) {
+            logger.info("No pending tickets found");
             return ResponseEntity.ok(Collections.emptyList());
         }
 
         LocalDateTime now = LocalDateTime.now();
 
-        for(TicketResponse ticketResponse : ticketResponses) {
-            if(ticketResponse == null || ticketResponse.getShowTime() == null){
-                logger.warn("Ticket or Showtime is null, skipping ...");
-               continue;
+        for (Ticket ticket : pendingTickets) {
+            if (ticket == null) {
+                logger.warn("Ticket is null, skipping...");
+                continue;
             }
 
-            LocalDateTime showtime = ticketResponse.getShowTime();
+            // Nếu muốn kiểm tra theo createdAt:
+            LocalDateTime createdAt = ticket.getCreatedAt();
 
-            if(now.isBefore(showtime)){
-                if(ticketResponse.getStatus() == TicketStatus.USED){
-                    logger.info("Ticket is used");
-                }else {
-                    return ResponseEntity.ok(Collections.emptyList());
-                }
-            } else if (now.isAfter(showtime) && ticketResponse.getStatus() != TicketStatus.EXPIRED) {
-                if(ticketResponse.getStatus() != TicketStatus.USED){
-
-                    Ticket ticket = ticketRepository.findById(ticketResponse.getId()).orElseThrow(() -> new ApplicationContextException("Ticket does not exist"));
-                     ticket.setStatus(TicketStatus.EXPIRED);
-                     ticket.setUpdatedAt(LocalDateTime.now());
-                     ticketRepository.save(ticket);
-                     logger.info("Ticket with ID" + ticket.getId()+ " has been mark as EXPIRED");
-                     expiredTickets.add(ticketMapper.toTicketResponse(ticket));
-
-                }
+            // Kiểm tra nếu đã quá 20 phút kể từ khi tạo
+            if (createdAt != null && createdAt.plusMinutes(20).isBefore(now)) {
+                ticketRepository.deleteById(ticket.getId());
+                deletedTicketIds.add(ticket.getId());
+                logger.info("Deleted expired pending ticket with ID: " + ticket.getId());
             }
         }
 
-        if(expiredTickets.isEmpty()){
-            logger.info("Tickets list is empty");
-            return ResponseEntity.ok(Collections.emptyList());
+        if (deletedTicketIds.isEmpty()) {
+            logger.info("No expired pending tickets to delete");
         }
 
-        return ResponseEntity.ok(expiredTickets);
+        return ResponseEntity.ok(deletedTicketIds);
     }
+
 
     public TicketResponse CheckAndUpdateTicketStatus(long ticketId, TicketStatus status, long userId) {
 

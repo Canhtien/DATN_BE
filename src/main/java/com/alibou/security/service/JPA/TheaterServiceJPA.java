@@ -71,8 +71,8 @@ public class TheaterServiceJPA {
                 .collect(Collectors.toList());
     }
     // dành cho cms
-    public List<TheaterDTO> getTheaterHierarchy(String locationVal, String codeVal) {
-        List<Object[]> rows = repository.findGroupedTheaterMovieData(locationVal, codeVal);
+    public List<TheaterDTO> getTheaterHierarchy(String nameVal, String locationVal, String codeVal) {
+        List<Object[]> rows = repository.findGroupedTheaterMovieData(nameVal, locationVal, codeVal);
         Map<Long, TheaterDTO> theaterMap = new LinkedHashMap<>();
 
         for (Object[] row : rows) {
@@ -102,7 +102,7 @@ public class TheaterServiceJPA {
                     .filter(m -> m.getId().equals(movieId))
                     .findFirst()
                     .orElseGet(() -> {
-                        MovieDTO newMovie = new MovieDTO(movieId, movieTitle, posterUrl, null);
+                        MovieDTO newMovie = new MovieDTO(movieId, movieTitle, posterUrl, null, null);
                         hall.getMovies().add(newMovie);
                         return newMovie;
                     });
