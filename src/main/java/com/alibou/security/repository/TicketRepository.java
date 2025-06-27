@@ -15,6 +15,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,9 @@ import java.util.Optional;
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
     boolean existsById(Long id);
+
     void deleteByShowtimeId(Long showtimeId);
+
     List<Ticket> findByStatus(TicketStatus status);
 
 
@@ -65,7 +68,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             "LEFT JOIN s.hall h " +
             "WHERE (:id IS NULL OR t.id = :id)",
             countQuery = "SELECT COUNT(t) FROM Ticket t")
-    Page<TicketResponse> findAllTickets(@Param("id")Long id, Pageable pageable);
+    Page<TicketResponse> findAllTickets(@Param("id") Long id, Pageable pageable);
 
     @Query("SELECT t.status, t.seat.id FROM Ticket t WHERE t.showtime.id = :id")
     List<Object[]> findAllByShowtimeId(@Param("id") Long id);
@@ -77,5 +80,30 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     @Modifying
     @Transactional
     @Query("UPDATE Ticket t set t.showtime = null WHERE t.showtime.id IN (SELECT s.id FROM Showtime s WHERE  s.id IN :showtimeId)")
-    void setShowtimeIdToNullInDeleteShowtime(@Param("showtimeId") List <Long> showtimeId);
+    void setShowtimeIdToNullInDeleteShowtime(@Param("showtimeId") List<Long> showtimeId);
+
+    @Query("SELECT COUNT(t) FROM Ticket t WHERE DATE(t.createdAt) = CURRENT_DATE")
+    long countTicketsToday();
+
+    @Query("SELECT COALESCE(SUM(t.price + t.serviceFee), 0) FROM Ticket t WHERE DATE(t.createdAt) = CURRENT_DATE AND t.status IN ('PAID', 'USED')")
+    BigDecimal sumRevenueToday();
+
+    @Query("SELECT t.showtime.movie.title, SUM(t.price + t.serviceFee) " +
+            "FROM Ticket t WHERE FUNCTION('DATE_FORMAT', t.createdAt, '%Y-%m') = :month " +
+            "AND t.status IN ('PAID', 'USED') GROUP BY t.showtime.movie.title ORDER BY SUM(t.price + t.serviceFee) DESC")
+    List<Object[]> findTopMoviesByRevenue(@Param("month") String month);
+
+    @Query("SELECT COUNT(t) FROM Ticket t WHERE MONTH(t.createdAt) = MONTH(CURRENT_DATE) AND YEAR(t.createdAt) = YEAR(CURRENT_DATE)")
+    long countTicketsThisMonth();
+
+    @Query("SELECT COALESCE(SUM(t.price + t.serviceFee), 0) FROM Ticket t WHERE MONTH(t.createdAt) = MONTH(CURRENT_DATE) AND YEAR(t.createdAt) = YEAR(CURRENT_DATE) AND t.status IN ('PAID', 'USED')")
+    BigDecimal sumRevenueThisMonth();
+
+    @Query("SELECT t.showtime.movie.title, SUM(t.price + t.serviceFee) " +
+            "FROM Ticket t WHERE t.status IN ('PAID', 'USED') GROUP BY t.showtime.movie.title ORDER BY SUM(t.price + t.serviceFee) DESC")
+    List<Object[]> getRevenueByMovie();
+
+    @Query("SELECT t.showtime.theater.name, SUM(t.price + t.serviceFee) " +
+            "FROM Ticket t WHERE t.status IN ('PAID', 'USED') GROUP BY t.showtime.theater.name ORDER BY SUM(t.price + t.serviceFee) DESC")
+    List<Object[]> getRevenueByTheater();
 }

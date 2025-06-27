@@ -41,4 +41,11 @@ public interface ShowTimeRepository extends JpaRepository<Showtime, Long> {
 //    @Modifying
 //    @Query("UPDATE Showtime s SET s.movie = null WHERE s.movie.id = :movieId")
 //    void setMovieIdToNull(@Param("movieId") Long movieId);
+
+    @Query("SELECT COUNT(s) FROM Showtime s WHERE DATE(s.showTime) = CURRENT_DATE")
+    long countShowtimesToday();
+
+    @Query("SELECT COUNT(s) FROM Showtime s WHERE WEEK(s.showTime) = WEEK(CURRENT_DATE) AND YEAR(s.showTime) = YEAR(CURRENT_DATE)")
+    long countShowtimesThisWeek();
+
 }

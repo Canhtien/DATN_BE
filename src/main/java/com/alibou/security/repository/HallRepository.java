@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,4 +19,10 @@ public interface HallRepository extends JpaRepository<Hall, Long> {
     @Query(value = "SELECT m FROM Movie m",
             countQuery = "SELECT COUNT(m) FROM Movie m")
     Page<HallResponse> findAllWithPagination(Pageable pageable);
+
+    @Query("SELECT COUNT(h) FROM Hall h")
+    long countAllHalls();
+
+    @Query("SELECT h.status, COUNT(h) FROM Hall h GROUP BY h.status")
+    List<Object[]> countHallsByStatus();
 }

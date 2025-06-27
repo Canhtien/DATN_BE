@@ -4,6 +4,7 @@ import com.alibou.security.entity.Theater;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -56,4 +57,7 @@ public interface TheaterRepository extends JpaRepository<Theater, Long> {
             ORDER BY t.id, st.id, h.id, sr.id, s.seat_number
     """, nativeQuery = true)
     List<Object[]> findShowStructureByMovieIdAndDate(@Param("movieId") Long movieId, @Param("date") LocalDate date);
+
+    @Query("SELECT COUNT(t) FROM Theater t")
+    long countAllTheaters();
 }

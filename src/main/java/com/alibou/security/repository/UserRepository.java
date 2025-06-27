@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
@@ -26,4 +27,17 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "SELECT u FROM User u WHERE u.username LIKE %:username%",
             countQuery = "SELECT COUNT(u) FROM User u WHERE u.username LIKE %:username%")
     Page<User> findAllByUsernameContaining(String username, Pageable pageable);
+
+
+    @Query("SELECT COUNT(u) FROM User u")
+    long countAllUsers();
+
+    @Query("SELECT COUNT(u) FROM User u WHERE DATE(u.createdAt) = CURRENT_DATE")
+    long countNewUsersToday();
+
+    @Query("SELECT COUNT(u) FROM User u WHERE MONTH(u.createdAt) = MONTH(CURRENT_DATE) AND YEAR(u.createdAt) = YEAR(CURRENT_DATE)")
+    long countNewUsersThisMonth();
+
+    @Query("SELECT u.role.name, COUNT(u) FROM User u GROUP BY u.role.name")
+    List<Object[]> countUsersByRole();
 }
